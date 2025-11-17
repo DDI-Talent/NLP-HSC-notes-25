@@ -11,6 +11,10 @@ data/wiki*
 **/ehthumbs.db
 **/Thumbs.db
 
+# data
+data/guardian_articles*
+*.udpipe
+data/wiki*
 
 # python
 **/.ipynb_checkpoints
