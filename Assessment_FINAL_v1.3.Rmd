@@ -1,0 +1,136 @@
+---
+title: "Assessment Final file"
+author: "here put your exam number, eg B12345678 (not your student number S1234987 or your name)"
+date: "2025-11-21"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+# this is needed so that KTIT exports correctly
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Final Assessment for NLP for Health and Social Care: Write a short article titled "Five Learnings from recent Guardian articles about health issues.".
+
+Look at the data. Use techniques you learned on this course. Describe 5 things you learned from that data in a short sentence each. For each of the Learnings provide: code that backs your claims, simple visualisations that back your claims, and a 1-2 paragraphs that explain what you learned.
+
+All details about the assessment you can find on Learn.
+
+```{r}
+# Testing if you have run the most recent version: what time was this document run last time? this will show you if you are exporting your most recent version.
+print( paste("this block was last run at", Sys.time()))
+```
+
+```{r}
+# Testing if export works: example silly plot of the Arthur's Seat skyline ;P When you test exporting to pdf this will show you if your graphs are exported correctly
+# you can remove this silly graph for your final submission (by then you will have other graphs to see if your export works)
+plot(c(1,2,3,4,5),c(0,10,8,12,0),type='o') 
+```
+
+```{r}
+library(dplyr) 
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+install.packages("pacman")
+pacman::p_load(dplyr, purrr)
+```
+
+----
+
+# Starting code for your report (your work starts just after the data has been loaded)
+
+## Download the data
+
+```{r}
+# this part is already written for you, so you can run it once, and then you can comment it out, since the data will be already downloaded for you:
+# options(time-out = 600)
+# 
+# # files are actually at 'https://raw.githubusercontent.com/drpawelo/data/refs/heads/main/health/nlp_guardian_batch_1.csv'
+# 
+
+how_many_files_can_your_system_handle = 2 # here put a number from 1 to 5. Dataset was split into 5 evenly spread parts, but loading all of them all at once might overwhelm your R.
+file_path_without_ending='https://raw.githubusercontent.com/drpawelo/data/refs/heads/main/health/nlp_guardian_batch_'
+
+for (batch_id in 1:how_many_files_can_your_system_handle){
+  remote_file_name <- paste0(file_path_without_ending, batch_id, ".csv")
+  local_file_name <- paste0("./data/guardian_articles_", batch_id, ".csv")
+	if (!file.exists(local_file_name)){
+	 download.file(remote_file_name, local_file_name)
+	}
+}
+```
+
+Now load the data:
+
+```{r}
+guardian_articles <- seq(1, how_many_files_can_your_system_handle) %>%
+	paste0("./data/guardian_articles_", ., ".csv") %>%
+	map(read.csv, stringsAsFactors =FALSE, header=TRUE, encoding="UTF-8") %>%
+	list_rbind()
+
+# code above finds local name of each file, reds them, and combines them into one dataframe
+
+guardian_articles$id <- 1:nrow(guardian_articles)
+```
+
+Small test if data loaded well:
+
+```{r}
+head(guardian_articles, n=3 )
+# notice that when you're finished and exporting this to pdf, showing head() line this will 'print' a few pages of ugly-looking text. So you probably want to limit just showing data like this in your final submission.
+# maybe think of showing tables instead, or limiting which rows/columns you include.
+```
+
+Start your code here:
+
+```{r}
+# data clean-up code can go here, if it doesn't not really belong to an individual 'Learning' but rather is shared by them.
+
+
+```
+
+## Title: Five Learnings from recent Guardian articles about health issues. (x words all together)
+
+## Introduction
+
+TODO: Some short introduction, e.g.. I did this and that. (x words)
+
+## Learning 1: TODO: Something you learned will be here eg: People talk much more about nurses than about doctors, and Scotland is mentioned as frequently as England.
+
+TODO: Here you explain what you found, how you found it, and what are possible limitations of it. (x words, including the above title of the learning)
+
+```{r}
+# your analysis code
+# code which backs your reasoning from above paragraph.
+# For readability you might chose to have your code in multiple blocks like this. To create a new one, use the green +C button in RStudio, and pick 'R' as a type of block.
+# TODO: 
+```
+
+
+```{r}
+# your visualisation code (graph / table / print).
+# visualisation which backs your reasoning from above paragraph. 
+# Make it so that the visualisation appears under this block. So e.g.. if you created the dataframe to show in the block above this one, just call that variable below here, so that R shows it below.
+# TODO: 
+
+```
+
+## Learning 2... same as above
+
+here the write-up paragraph, then two blocks of code for the this learning (x words, including title)
+
+## Learning 3... same as above
+
+here the write-up paragraph, then two blocks of code for the this learning (x words, including title)
+
+## Learning 4... same as above
+
+here the write-up paragraph, then two blocks of code for the this learning (x words, including title)
+
+## Learning 5... same as above
+
+here the write-up paragraph, then two blocks of code for the this learning  (x words, including title)
+
+## Conclusion
+
+Short conclusion here (x words)
